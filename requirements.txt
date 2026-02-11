@@ -3,5 +3,6 @@ matplotlib
 seaborn
 streamlit
 numpy
+setuptools
 ydata-profiling
 streamlit-ydata-profiling
