@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 import numpy as np
-from ydata_profiling import ProfileReport
-from streamlit_ydata_profiling import st_profile_report
 
 st.set_page_config(
     page_title="Diabetes Data Dashboard 🩺",
@@ -83,10 +81,14 @@ elif page == "Visualization 📊":
 
 elif page == "Automated Report 📑":
     st.subheader("03 Automated Report")
-    if st.button("Generate Report"):
-        with st.spinner("Generating report..."):
-            profile = ProfileReport(df,title="Diabetes Data Report",explorative=True,minimal=True)
-            st_profile_report(profile)
-
-        export = profile.to_html()
-        st.download_button(label="📥 Download full Report",data=export,file_name="diabetes_report.html",mime='text/html')
+    st.markdown("##### Summary statistics")
+    st.dataframe(df.describe())
+    st.markdown("##### Data shape & dtypes")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Rows", df.shape[0])
+        st.metric("Columns", df.shape[1])
+    with col2:
+        st.write(df.dtypes)
+    csv = df.describe().to_csv()
+    st.download_button(label="📥 Download summary (CSV)", data=csv, file_name="diabetes_report_summary.csv", mime="text/csv")
